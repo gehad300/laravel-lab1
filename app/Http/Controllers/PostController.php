@@ -3,99 +3,85 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\User;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = [
-            ['id' => 1, 'title' => 'First Post', 'posted_by' => 'Ahmed', 'created_at' => '2002-02-19 10:00:00'],
-            ['id' => 2, 'title' => 'second Post', 'posted_by' => 'Mohamed', 'created_at' => '2002-02-15 10:00:00']
-
-        ];
-        //   dd($posts);
-        //die dump will dump any value you give to it and stop execution
+        $posts = Post::paginate(5);
+        //select data based on passed parameter
+        // $posts->append($request->all());
         return view('posts.index', [
-            'posts' => $posts,
-
-            //here post=>posts is a second paramete which is data i passed to call back function that i will write view name in the route instead of call back function
-            //view name called posts
-            // i will make return here thenc put it as uri in route
-            //index is an action will list resouces
-            //index is action name and also i should put it instead of call back function //verb here is get is the type of request that i will do on action for resouces is get
-            //uri is name of view that i will wite it on url to display controller page
-            // icannot access anything without route so for ex:/posts is a view file
-
+            'posts' =>
+            $posts
         ]);
     }
     public function create()
     {
-
-        return view('posts.create');
+        //select *from posts where id=5;
+        //query users table in create action that render create forn to full data
+        $users = user::all();
+        //    dd($users);
+        //all cause i want to get all user
+        return view('posts.create', ['users' => $users]);
     }
     public function store()
     {
-        //fetch request data
-        //store request data in do
+        $requestdata = request()->all();
+
+        //  dd($requestdata);
+        //requestdata =>array
+        //todo
+        //store request data
+        //query=post=>which means
+        //create method store in database
+        // post::create([
+        //array take column name and value to add in this column
+        // 'title'=>$requestdata['title'],
+        //title parameter here comes here from form name
+        // 'description'=>$requestdata['description'],
+        //should put every column in fillable
+        //  ] );
+        post::create($requestdata);
         //redirection to posts.index
-        // $requestdata=request()->all();
-        //request global helper method //returrn object i can access from it prpbperties and method
-        // dd($requestdata);
-        // return '';
-        //how to get input data
-        // return to_route('posts.index');
         return redirect()->route('posts.index');
-        //here this is istead of view to redirect to another page
-
-
-
+        //elquent=model
     }
-
     public function show($postId)
     {
-        $post = $this->getPost($postId);
-        return  view('posts.show', ['post' => $post]);
+        $post = Post::find($postId);
+        //change date style
+        $date = Carbon::parse($post->created_at)->format('l jS \of F Y h:i:s A');
+        return view('posts.show', [
+            'post' => $post,
+            'date' => $date,
+        ]);
+    }
+    public function edit($postId)
+    {
+        return view('posts.edit', [
+            'post' => Post::find($postId),
+            'users' => User::all(),
+        ]);
+    }
+    public function update(Request $request, $postId)
+    {
+        // @dd($request->all());
+        Post::where('id', $postId)->update([
+            'title' => $request->all()['title'],
+            'description' => $request->all()['description'],
+            'user_id' => $request->all()['post_creator'],
+        ]);
+        return redirect()->route('posts.index');
     }
 
-    public function edit($postid)
+    public function destroy($postID)
     {
-        $post = $this->getPost($postid);
-        return  view('posts.edit', ['post' => $post]);
-    }
-
-    public function update()
-    {
+        Post::where('id', $postID)->delete();
 
         return redirect()->route('posts.index');
     }
-    public function delete()
-    {
-        return redirect()->route('posts.index');
-    }
-
-    public function getPosts()
-    {
-        //FUNCTION TO RETREIVE ASSOCIATIVE ARRAY
-        return
-            [
-                ['id' => 1, 'title' => 'first post', 'description' => 'first post describtion', 'posted_by' => 'gehad', 'email' => 'gehad@gmail.com', 'created_at' => '2022-02-20 5:00:00'],
-                ['id' => 2, 'title' => 'second post', 'description' => 'second post describtion', 'posted_by' => 'ahmed', 'email' => 'Ahmed@gmail.com', 'created_at' => '2022-02-20 10:00:30'],
-            ];
-    }
-
-    public function getPost($id)
-    {
-        $posts = $this->getPosts();
-        foreach ($posts as $post) {
-            if ($post['id'] == $id) {
-                return $post;
-            }
-            //FUNCTION TO LOOP  TO ARRAY AND RETURN ID
-        }
-        return null;
-    }
-
-    //here this is controller to view posts
-    //any table in the system called resources
-    //and it implement operations
 }

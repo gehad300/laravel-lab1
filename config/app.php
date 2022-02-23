@@ -14,6 +14,8 @@ return [
     | any other location as required by the application or its packages.
     |
     */
+    //configration of database
+    //
 
     'name' => env('APP_NAME', 'Laravel'),
 

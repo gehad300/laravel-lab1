@@ -22,7 +22,11 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+//model is a class to connect to database and reterive data
+//post is a class from this i can call methods to query this table
+//php artisan make:model article
+// class post will query posts table
+//class user will query users table
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -18,10 +18,10 @@
     <div class="mb-3">
         <label class="form-label">Post Creator</label>
         <select name="post_creator" class="form-control">
-            <option disabled>Creator</option>
-            <option value=" {{$post['posted_by'] == "gehad" ? "selected" : "" }} ">gehad</option>
-            <option value=" {{$post['posted_by'] =="ahmed" ? "selected" : "" }} ">ahmed</option>
-
+            @foreach ($users as $user)
+            
+                    <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
         </select>
     </div>
     <button type="submit" class="btn btn-success">Update</button>

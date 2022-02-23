@@ -42,7 +42,10 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
+        //configuration is more important than env
+        //in configuration file just to hide something he will read variables from env
+        //conf file call env and call every variable and put it's value
+        //if i want to add config i can
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

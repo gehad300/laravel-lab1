@@ -1,4 +1,4 @@
-{{--  {{--  // will contain the common things in  --}}
+{{--  // will contain the common things in
 {{--  index and create  --}}
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +38,7 @@
 <div class="container">
     @yield('content')
     {{--  //@when child make inheritance from parent put your content here
-{{--  //also i will put name of the place that i will put my content in  --}}  
+{{--  //also i will put name of the place that i will put my content in  --}}
 </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

@@ -20,10 +20,13 @@
 
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label"> post creator</label>
-           <select name="posts_creator" class="form-control">
-               <option value="1">Gehad</option>
-               <option value="2">Ahmed</option>
+           <select name="user_id" class="form-control">
+          @foreach ($users as $user)
 
+//foreach here to send dynamic data
+            <option value={{ $user->id }}>{{ $user->name }}</option>
+               {{--  <option value="2">Ahmed</option>  --}}
+               @endforeach
            </select>
           </div>
 
